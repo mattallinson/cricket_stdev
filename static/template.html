@@ -9,20 +9,48 @@
 
 <body>
 	<nav>
-		<a href="http://mattallinson.com/2018/11/12/cricketing-deviants/">Return to blog</a>
+		<a href="http://mattallinson.com/2018/11/12/cricketing-deviants/">mattallinson.com</a> | <a href="https://github.com/mattallinson/cricket_stdev">View code on github</a> | <a href="#data">Jump to table</a>
 	</nav>
 	<main>
 		<header><h1>Cricket Batsmen Standard Deviation</h1></header>
 
-		<p>The table on this page lists the top 200 best male test cricket batsmen based on total number of runs scored. They've been analysed according to a version of the script you can find in <a href="">this notebook</a> which was made to accompany <a href="http://mattallinson.com/2018/11/12/cricketing-deviants/">this blog post on the standard deviation of cricket averages</a>. As well as coming up with standard deviations, I also come up with two extra, slightly O.T.T. cricketing metrics, which are explained below.</p>
+		<p>The table on this page lists the top 200 highest scoring male test cricket batsmen. During one of Keaton Jenning's rare instances of batting prowess, a (nerdy) friend asked if there was a way to easily calculate the standard deviation of a batsman's average. There wasn't, so I've made it <a href="https://github.com/mattallinson/cricket_stdev">here</a>. I turned it on the top 200 scorers because more datapoints makes st dev a more meaningful measurement, and as we're about to see this is a debatably meaningful measure anyway. As well as coming up with standard deviations, I also come up with two extra &ndash;ridiculous&ndash; cricketing metrics, but we'll get to them in a bit.</p>
 
+		<h2>What is Standard Deviation</h2>
 
-		<p><h2>What the new terms mean</h2></p><p>
+		<p><a href="https://simple.wikipedia.org/wiki/Standard_deviation"> Standard deviation</a> tells you how much a population varies from a mean. A common example is that average male height in western Europe is 5ft 10inches with a standard deviation of 4 inches, therefore <strong>most</strong> men are between 5ft 6 inches and 6ft 2 inches. The definition of "most" depends on the <a href="https://simple.wikipedia.org/wiki/Frequency_distribution">distribution</a>, which isn't worth getting bogged down in here, but means somewhere between two-thirds and three quarters of all the data-points are within one standard deviation of the mean. If I had a test batting average of 23.45 and a standard deviation of 19.3, it would mean that in most of my matches, I scored between 4 and 42 runs (which if you've ever seen me play cricket you'll know is unlikely).</p>
+
+		<h3>So what does St Dev show?</h3>
+		<p>Well, my initial thought would be that a low St Dev would indicate a reliable test batsman. So imagine my suprise when the lowest St Dev of any test batsman was in fact... Shane Warne. As it turned out, over half the top 10 for lowest standard deviation are bowlers who've bowled in so many test matches they managed to slowly but surely accrue enough runs to sneak into the bottom of the top 200. As if to really prove the point, Warne is the only player in the top 200 without a test century (which makes his high score of 99 even funnier).
+		</p>
+
+		<p> On the other end of the spectrum, the player with the highest standard deviation is... Donald Bradman. As it turned out, <emphasis>all</emphasis> of the top 10 for highest standard deviation happen to be the best male batsmen of their generations. The problem with standard deviation is that bowlers who manage to get 15 runs every match, but never much more than 15 runs, and then go on to play in 170 test matches, are going to have low standard deviations. Meanwhile phenomenal players who will usually get around 60 runs every match, but occasionally get 400 runs &ndash;I'm looking at you, Brian Lara&ndash; are going to have a terrible standard deviation despite being superior batsmen.
+		</p>
+
+		<h3>So let's cook the numbers some more</h3>
+		<p>As we've discovered, st dev isn't very useful for comparing the merits of batsmen. But one thing I quickly noted while comparing the st devs of Bradman and Lara is that Bradmans st dev is smaller than his average, wheras Lara's st dev is larger than his average. So I decided to make a new metric where I divided the average by the standard deviation. I've called it Reliability, because a number above 1 means that  the batsman will get at least 1 run the vast majority of times.</p>
+		
+		<p>
 		$$reliability = {\text{average} \over \text{standard deviation}}$$
+		</p>
+
+		<p>
+		The winner by this new reliability statistic is Shaun Pollock. Now, I'm pretty sure even Shaun's mum wouldn't call him the world's best batsman, but this test seems like a fairer measure. However Chaminda Vaas still makes the top 10 best batsman by this metric, and while he's definitely one of the best bowlers Sri Lanka ever produced, he's probably not also one of the world's best batsmen. I then figured why not multiply the average by the reliability. That way batsmen with high averages but also a decent reliability will rise to the top, above consistent if a little mediocre tail-enders. It'll also push big hitting batsmen who are inconsistent down the ranking. I've called it "Dependableness" because frankly by this point everything's made up and the names don't matter &ndash; but roughly speaking the more dependable batsmen will be more likely to get their team more runs. If you're keeping track of the units of these measurements, the unit of dependableness is actually runs, so I think what dependableness shows is <em> "What is a reasonable score for this batsman on a good day"</em>. 
+		</p>
+
+		<p>
 		$$dependableness = \text{reliability} \times \text{average} = {\text{average}^2 \over \text{standard deviation}}$$
 		</p>
 
-		<p>Click headings to sort by that column. <a href="top200_batsmen.csv">Download the data</a> as a .csv (right click and save file).</p>
+		<h4>So what does it show us </h4>
+		<p>Well my "Dependableness" metric really punishes sub-continent batsmen. As can be predicted with any metric that takes the square the average into account, Bradman is by far and away the winner, with Herbet Sutcliff &ndash; England's leading batsman in the Bradman era &ndash; second. The top 10 is split with Eng, Aus and the West Indies having 3 each, with South Africa having 1. Steve Smith is the only player who is "currently" playing test cricket who features in the top cohort. You have to go all the way down to 13 before we get our first sub continent player, Misbah-ul-Haq, and down to 22 before we reach our first Indian, which isn't Tendulkar (who is 23rd) but Dravid. By this measure, Andy Flower is a better batsman than Sachin Tendulkar.</p>
+
+		<p> I could go on, but by this point, having made myself the scourge of Mumbai and the toast of Harare, I think I'll stop and let the numbers do the talking. I can't work out how to put comments on a github page so <a href=http://mattallinson.com/2018/11/12/cricketing-deviants/">there's a post on my wordpress site</a> with a comments box where furious India fans can hurl abuse at me for suggesting Misbah-ul-Haq is better than Tendulkar.</p>
+
+		<a name="data"></a>
+		<p><em>Click headings to sort by that column.</em></p>
+		<p><a href="top200_batsmen.csv">Download the data</a> as a .csv (right click and save file).</p>
+		
 
 		=== Add Table Here ===
 

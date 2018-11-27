@@ -89,7 +89,7 @@ def main():
 	    raise "connection to cricinfo gone wrong somewhere"
 
 	#populates a list of batsmen
-	print("creating list of batsmen & basic Data")
+	print("Creating list of batsmen & basic data")
 	top_200 = [batsman(get_player_info(row)) for row in rows[1:]]
 	if len(top_200) != 200:
 	    raise "You've not got 200 players for some reason, check scraper is working"
@@ -98,8 +98,7 @@ def main():
 	c = 1
 	print("Downloading data for each batsman....")
 	for player in top_200:
-	    if c % 10 == 0:
-	        print(c, 'Downloading',player.name ,'data.')
+	    print(c, 'Downloading\t',player.name ,'data.')
 	    player.add_runs()
 	    c += 1
 	#makes timestamp
@@ -117,13 +116,13 @@ def main():
 	#Ranks them
 	rankedPlayers = sorted(top_200, key=sort_players)
 
-	#outputs all their statistics as a CSV file
-	with open('top200_batsmen.csv', 'w', newline='') as csvfile:
-	    print("Saving CSV")
-	    csvwriter = csv.writer(csvfile)
-	    csvwriter.writerow(['Name','Country','Runs','Average', 'Standard Deviation', 'Reliability', 'Dependableness','50s','100s','highscore','','Table Created',now])
+	#outputs all their statistics as a TSV file
+	with open('top200_batsmen.tsv', 'w', newline='') as tsvfile:
+	    print("Saving TSV")
+	    tsvwriter = csv.writer(tsvfile, delimiter='\t')
+	    tsvwriter.writerow(['Name','Country','Runs','Average', 'Standard Deviation', 'Reliability', 'Dependableness','50s','100s','highscore','','Table Created',now])
 	    for player in rankedPlayers:
-	        csvwriter.writerow([player,player.country,sum(player.runs), round(player.average,2), round(player.stdev,2), round(player.reliability,4),round((player.average**2)/player.stdev,2), player._50s,player._100s,player.highscore])
+	        tsvwriter.writerow([player,player.country,sum(player.runs), round(player.average,2), round(player.stdev,2), round(player.reliability,4),round((player.average**2)/player.stdev,2), player._50s,player._100s,player.highscore])
 
 	#Creates the HTML version of the data table
 	#Creates the table header
@@ -172,7 +171,7 @@ def main():
 	with open("static/template.html",'r') as template_file:
 		template = template_file.read()
 
-	print("saving webpage")
+	print("Saving webpage")
 	output = template.replace("=== Add Table Here ===", table).replace("=== Add Timestampe Here ===", "Data downloaded: " + str(now))
 
 	with open("index.html", "w") as output_file:

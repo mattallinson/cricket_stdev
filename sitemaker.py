@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import statistics
-import csv
+import csv, json
 from datetime import datetime
 
 class batsman:
@@ -123,6 +123,15 @@ def main():
 	    tsvwriter.writerow(['Name','Country','Runs','Average', 'Standard Deviation', 'Reliability', 'Dependableness','50s','100s','highscore','','Table Created',now])
 	    for player in rankedPlayers:
 	        tsvwriter.writerow([player,player.country,sum(player.runs), round(player.average,2), round(player.stdev,2), round(player.reliability,4),round((player.average**2)/player.stdev,2), player._50s,player._100s,player.highscore])
+
+	#outputs all the data from the script as a json file
+	with open("top200_batsmen.json", 'w') as jsonfile:
+		print("Saving json")
+		datadict = {}
+		for player in top_200:
+			datadict[player.name] = {"id":player.id_,"country":player.country,"runs":player.runs}
+
+		json.dump({"date": now, "data":datadict}, datajson, indent=4, separators=(', ',': '))
 
 	#Creates the HTML version of the data table
 	#Creates the table header
